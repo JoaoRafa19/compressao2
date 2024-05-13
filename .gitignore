@@ -12,6 +12,7 @@ migrate_working_dir/
 
 # IntelliJ related
 *.iml
+*.json
 *.ipr
 *.iws
 .idea/
@@ -44,3 +45,4 @@ app.*.map.json
 *.env.*
 env*
 *.env
+env.json
