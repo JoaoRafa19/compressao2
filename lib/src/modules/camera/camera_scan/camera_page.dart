@@ -154,13 +154,13 @@ class _CameraPageState extends State<CameraPage> {
         ),
         body: Scaffold(
           appBar: AppBar(
-            toolbarHeight: 10,
+            toolbarHeight: 0,
           ),
           body: Align(
             alignment: Alignment.topCenter,
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 1),
-              padding: const EdgeInsets.all(40),
+              padding: const EdgeInsets.all(10),
               width: sizeOf.width * .9,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:compressao2/src/core/enviroment.dart';
 import 'package:compressao2/src/core/rest_client.dart';
@@ -71,8 +72,9 @@ class ImageRepositoryImpl implements ImageRepository {
   }
 
   @override
-  Future<({int succes, int fail})> sendImages(List<ImageModel> images,
-      {Function(int, int)? progress}) async {
+  Future<({int succes, int fail})> sendImages(
+    List<ImageModel> images,
+  ) async {
     try {
       final sp = await SharedPreferences.getInstance();
       int succeses = 0;
@@ -81,7 +83,7 @@ class ImageRepositoryImpl implements ImageRepository {
       for (final image in images) {
         final formData = FormData.fromMap({
           'file': MultipartFile.fromBytes(
-            image.base64Image,
+            Uint8List.fromList(image.base64Image),
             filename: image.imageName,
           ),
           'directory': 'comprimir',
@@ -90,9 +92,10 @@ class ImageRepositoryImpl implements ImageRepository {
         final options = Options(
             persistentConnection: true,
             headers: {
-              "Content-Type": "multipart/form-data;charset",
+              "Content-Type": "multipart/form-data;",
               "Accept-Language": "pt-BR",
               "Accept": "application/json",
+              "Content-length": image.base64Image.length,
               "Authorization": "Bearer ${Env.token}"
             },
             extra: {"DIO_AUTH_KEY": true},
@@ -109,7 +112,6 @@ class ImageRepositoryImpl implements ImageRepository {
         } catch (e) {
           fails++;
         }
-        progress?.call(images.indexOf(image), images.length);
       }
       return (succes: succeses, fail: fails);
     } catch (e) {
