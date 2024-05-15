@@ -42,7 +42,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-*.env.*
-env*
-*.env
 env.json
+env.*.json
+*.env.json 
+*.env
