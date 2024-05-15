@@ -56,7 +56,6 @@ class _CameraPageState extends State<CameraPage> {
     return OrientationBuilder(builder: (context, orientation) {
       if (orientation == Orientation.landscape) {
         return SafeArea(
-          top: false,
           child: FutureBuilder(
             future: cameraController.initialize(),
             builder: (context, snapshot) {

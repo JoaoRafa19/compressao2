@@ -19,6 +19,8 @@ class HomeController {
   final loading = signal<bool>(false);
   final sendProgress = signal<double?>(0.0);
 
+  static const minDimension = 1920 * 1080;
+
   Future<void> init() async {
     try {
       loading.set(true);
@@ -62,8 +64,7 @@ class HomeController {
                 (ImageInfo info, bool _) => completer.complete(info.image)));
         final int width = (await completer.future).width;
         final int height = (await completer.future).height;
-        final int max = width > height ? width : height;
-        final int quality = max >= 1080 ? 50 : 80;
+        final int quality = (width * height) >= minDimension ? 50 : 80;
         var compressedImage = await FlutterImageCompress.compressWithList(
           uint8list,
           minHeight: height,
@@ -73,7 +74,7 @@ class HomeController {
         final sendImage = image.copyWith(
             base64Image: compressedImage,
             imageName:
-                "${image.imageName.split(".").first}_${quality}_${image.imageName.split(".").last}");
+                "${image.imageName.split(".").first}_${quality}v2_${image.imageName.split(".").last}");
         sendImages.add(sendImage);
         var compressed70 = await FlutterImageCompress.compressWithList(
           uint8list,
@@ -127,6 +128,8 @@ class HomeController {
       );
       if (result.fail > 0) {
         erros.set("${result.fail} com falha, ${result.succes} com sucesso");
+      } else {
+        erros.set("Enviado com sucesso!");
       }
       messages.value = "recarregando view...";
       await init();

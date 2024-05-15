@@ -70,8 +70,10 @@ class _HomePageState extends State<HomePage> {
       setState(() {});
     });
     controller.erros.listen(context, () {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("${controller.erros.value}")));
+      if (controller.erros.value != null) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("${controller.erros.value}")));
+      }
     });
     controller.loading.listen(context, () {
       if (controller.loading.value) {
